@@ -28,7 +28,7 @@ public class TweetController {
     }
 
     @GetMapping("/{userName}")
-    public List<Tweet> getTweetsByUser(@PathVariable("username") String userName) {
+    public List<Tweet> getTweetsByUser(@PathVariable("userName") String userName) {
         log.info("Returning tweets for user {}", userName);
         return service.findByUserName(userName);
     }

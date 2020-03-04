@@ -1,5 +1,6 @@
 package se.salemcreative.twitapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ public class User {
     @OneToMany(mappedBy = "author")
     private Set<Tweet> tweets;
 
-    // See https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -34,6 +35,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "following_id"))
     private Set<User> following = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "following")
     private Set<User> followers = new HashSet<>();
 

@@ -31,7 +31,7 @@ public class TweetControllerTest {
 	TweetService tweetService;
 
 	@Test
-	public void getAllTweets() throws Exception {
+	public void findAll() throws Exception {
 		User wizard = new User("Gandalf");
 		Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
 		wisdom.setAuthor(wizard);
@@ -46,5 +46,20 @@ public class TweetControllerTest {
 				.andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
 	}
 
+	@Test
+	public void findByUserName() throws Exception {
+		User wizard = new User("Gandalf");
+		Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+		wisdom.setAuthor(wizard);
+		List<Tweet> userTweets = new ArrayList<>();
+		userTweets.add(wisdom);
+
+		when(tweetService.findByUserName(wizard.getUserName())).thenReturn(userTweets);
+
+		mvc.perform(MockMvcRequestBuilders.get("/tweets/Gandalf").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
+	}
 
 }

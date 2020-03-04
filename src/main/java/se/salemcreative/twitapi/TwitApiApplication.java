@@ -35,8 +35,6 @@ public class TwitApiApplication {
 		final User orc2 = new User("Drumph");
 		final User orc3 = new User("Puthin");
 
-		//hobbit2.followUser(wizard1);
-		//hobbit3.followUser(wizard1);
 		orc1.followUser(wizard2);
 		orc2.followUser(wizard2);
 		orc3.followUser(wizard2);
@@ -50,6 +48,6 @@ public class TwitApiApplication {
 		userRepository.save(wizard1);
 		userRepository.save(wizard2);
 
-		//log.info("Persisted {} nr of users.", userRepository.count());
+		log.info("Persisted {} nr of users.", userRepository.count());
 	}
 }
