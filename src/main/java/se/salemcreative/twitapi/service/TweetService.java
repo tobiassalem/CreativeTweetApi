@@ -10,4 +10,6 @@ public interface TweetService {
 
     List<Tweet> findByUserName(String userName);
 
+    Tweet findById(Long id);
+
 }

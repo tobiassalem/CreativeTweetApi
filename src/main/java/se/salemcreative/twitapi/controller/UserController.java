@@ -25,20 +25,20 @@ public class UserController {
         return service.findAll();
     }
 
-    @GetMapping("/followers/{userName}")
-    public Set<User> getFollowers(@PathVariable("userName") String userName) {
+    @GetMapping("/followers/{username}")
+    public Set<User> getFollowers(@PathVariable("username") String userName) {
         log.info("Returning followers for user {}", userName);
         return service.findFollowers(userName);
     }
 
-    @PostMapping("/follow/{userName}")
-    public void followUser(@PathVariable("userName") String userName) {
+    @PostMapping("/follow/{username}")
+    public void followUser(@PathVariable("username") String userName) {
         log.info("Following user " + userName);
         service.followUser(userName);
     }
 
-    @PostMapping("/unFollow/{userName}")
-    public void unFollowUser(@PathVariable("userName") String userName) {
+    @PostMapping("/un-follow/{username}")
+    public void unFollowUser(@PathVariable("username") String userName) {
         log.info("Un-following user " + userName);
         service.unFollowUser(userName);
     }

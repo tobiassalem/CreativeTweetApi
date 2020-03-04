@@ -56,10 +56,26 @@ public class TweetControllerTest {
 
 		when(tweetService.findByUserName(wizard.getUserName())).thenReturn(userTweets);
 
-		mvc.perform(MockMvcRequestBuilders.get("/tweets/Gandalf").accept(MediaType.APPLICATION_JSON))
+		mvc.perform(MockMvcRequestBuilders.get("/tweets/users/Gandalf").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(1)))
 				.andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
+	}
+
+	@Test
+	public void findById() throws Exception {
+		final Long id = 42L;
+		User wizard = new User("Gandalf");
+		Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+		wisdom.setAuthor(wizard);
+		List<Tweet> userTweets = new ArrayList<>();
+		userTweets.add(wisdom);
+
+		when(tweetService.findById(id)).thenReturn(wisdom);
+
+		mvc.perform(MockMvcRequestBuilders.get("/tweets/"+id).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.message").value(wisdom.getMessage()));
 	}
 
 }

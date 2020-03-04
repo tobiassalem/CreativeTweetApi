@@ -27,10 +27,17 @@ public class TweetController {
         return service.findAll();
     }
 
-    @GetMapping("/{userName}")
-    public List<Tweet> getTweetsByUser(@PathVariable("userName") String userName) {
+    @GetMapping("/{id}")
+    public Tweet getTweetById(@PathVariable("id") Long id) {
+        log.info("Returning tweet by id {}", id);
+        return service.findById(id);
+    }
+
+    @GetMapping("/users/{username}")
+    public List<Tweet> getTweetsByUser(@PathVariable("username") String userName) {
         log.info("Returning tweets for user {}", userName);
         return service.findByUserName(userName);
     }
+
 
 }
