@@ -23,7 +23,7 @@ public class User {
     private String userName;
 
     @OneToMany(mappedBy = "author")
-    private Set<Tweet> tweets;
+    private Set<Tweet> tweets = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
@@ -87,7 +87,7 @@ public class User {
     /* ================================== [Logic] ================================================================= */
 
     public void followUser(User u) {
-        if (u == null || u == this) {
+        if (u == null || u.equals(this)) {
             log.error("You can only follow other users! You are trying to follow {}", u);
             return;
         }

@@ -18,45 +18,66 @@ import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class UserControllerTest extends AbstractControllerTest {
 
-	@Autowired
-	private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-	@MockBean
-	UserService userService;
+    @MockBean
+    UserService userService;
 
-	@Test
-	public void findAll() throws Exception {
-		final User hobbit = new User("frodo");
-		List<User> allUsers = new ArrayList<>();
-		allUsers.add(hobbit);
+    /**
+     * Requests without an access token should get code 401 = Unauthorized
+     *
+     * @throws Exception
+     */
+    @Test
+    public void requestWithoutAccessTokenIsUnauthorized() throws Exception {
+        final User hobbit = new User("frodo");
+        List<User> allUsers = new ArrayList<>();
+        allUsers.add(hobbit);
 
-		when(userService.findAll()).thenReturn(allUsers);
+        when(userService.findAll()).thenReturn(allUsers);
 
-		mvc.perform(MockMvcRequestBuilders.get("/users/").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(1)))
-				.andExpect(jsonPath("$[0].userName").value(hobbit.getUserName()));
-	}
+        mvc.perform(MockMvcRequestBuilders.get("/users/").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
 
-	@Test
-	public void findFollowers() throws Exception {
-		final User hobbit = new User("frodo");
-		final User wizard = new User("gandalf");
-		hobbit.followUser(wizard);
-		Set<User> followers = new HashSet<>();
-		followers.add(hobbit);
+    @Test
+    public void findAll() throws Exception {
+        List<User> allUsers = new ArrayList<>();
+        allUsers.add(hobbit);
 
-		when(userService.findFollowers(wizard.getUserName())).thenReturn(followers);
+        when(userService.findAll()).thenReturn(allUsers);
 
-		mvc.perform(MockMvcRequestBuilders.get("/users/followers/gandalf").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(1)))
-				.andExpect(jsonPath("$[0].userName").value(hobbit.getUserName()));
-	}
+        String accessToken = generateToken("frodo");
+        mvc.perform(MockMvcRequestBuilders.get("/users/")
+                .header(AUTH_HEADER, JWT_PREFIX + accessToken)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].userName").value(hobbit.getUserName()));
+    }
+
+    @Test
+    public void findFollowers() throws Exception {
+        hobbit.followUser(wizard);
+        Set<User> followers = new HashSet<>();
+        followers.add(hobbit);
+
+        when(userService.findFollowers(wizard.getUserName())).thenReturn(followers);
+
+        String accessToken = generateToken("frodo");
+        mvc.perform(MockMvcRequestBuilders.get("/users/followers/gandalf")
+                .header(AUTH_HEADER, JWT_PREFIX + accessToken)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].userName").value(hobbit.getUserName()));
+    }
 }

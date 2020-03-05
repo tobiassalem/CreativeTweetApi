@@ -22,7 +22,7 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-public class UserServiceTest {
+public class UserServiceTest extends AbstractServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
 
@@ -48,10 +48,6 @@ public class UserServiceTest {
 
     @MockBean
     private UserRepository userRepository;
-
-    final User hobbit = new User("Frodo");
-    final User wizard = new User("Gandalf");
-    final Long id = 1L;
 
     @Before
     public void setUp() {
@@ -79,7 +75,7 @@ public class UserServiceTest {
 
     @Test
     public void findByUserName() {
-        String userName = "Frodo";
+        String userName = hobbit.getUserName();
         User found = userService.findByUserName(userName);
 
         assertEquals(userName, found.getUserName());
@@ -87,11 +83,11 @@ public class UserServiceTest {
 
     @Test
     public void followUser() {
-        String userToFollow = "Gandalf";
+        String userToFollow = wizard.getUserName();
         userService.followUser(userToFollow);
 
         Set<User> followers = userService.findFollowers(userToFollow);
-        User currentUser = sessionService.getCurrentUser();
+        User currentUser = sessionService.getActiveUser();
 
         log.info("followers.size " + followers.size());
         log.info("currentUser: " + currentUser);
@@ -102,10 +98,10 @@ public class UserServiceTest {
 
     @Test
     public void unFollowUser() {
-        String userToUnFollow = "Gandalf";
+        String userToUnFollow = wizard.getUserName();
         userService.unFollowUser(userToUnFollow);
 
         Set<User> followers = userService.findFollowers(userToUnFollow);
-        assertFalse(followers.contains(sessionService.getCurrentUser()));
+        assertFalse(followers.contains(sessionService.getActiveUser()));
     }
 }

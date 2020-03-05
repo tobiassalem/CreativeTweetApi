@@ -11,14 +11,24 @@ import se.salemcreative.twitapi.model.User;
 public class SessionServiceMockImpl implements SessionService {
 
     final Logger log = LoggerFactory.getLogger(SessionServiceMockImpl.class.getSimpleName());
-    final String userName = "Frodo";
+    final String defaultUserName = "frodo";
+
+    private User activeUser;
 
     @Autowired
     UserRepository userRepository;
 
-    public User getCurrentUser() {
-        User currentUser = userRepository.findByUserName(userName);
-        log.info("---> Returning user: {}", currentUser);
-        return currentUser;
+    public User getActiveUser() {
+        if (activeUser == null) {
+            activeUser = userRepository.findByUserName(defaultUserName);
+        }
+        log.info("---> Returning activeUser: {}", activeUser);
+        return activeUser;
     }
+
+    @Override
+    public void setActiveUser(User user) {
+        activeUser = user;
+    }
+
 }

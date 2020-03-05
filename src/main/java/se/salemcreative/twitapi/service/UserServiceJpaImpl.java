@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.salemcreative.twitapi.jpa.UserRepository;
-import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 
 import java.util.List;
@@ -31,9 +30,9 @@ public class UserServiceJpaImpl implements UserService {
     public User findById(Long id) {
         Optional<User> byId = userRepository.findById(id);
         if (byId.isPresent()) {
-            return  byId.get();
+            return byId.get();
         } else {
-            throw new RuntimeException("No User with id " +id+"  exists");
+            throw new RuntimeException("No User with id " + id + "  exists");
         }
     }
 
@@ -49,11 +48,11 @@ public class UserServiceJpaImpl implements UserService {
 
     @Override
     public void followUser(String userName) {
-        User currentUser = sessionService.getCurrentUser();
+        User currentUser = sessionService.getActiveUser();
         User userToFollow = findByUserName(userName);
 
         log.info("currentUser: {}", currentUser);
-        log.info("userToFollow: {}" , userToFollow);
+        log.info("userToFollow: {}", userToFollow);
         log.info("currentUser is following {} others: ", currentUser.getFollowing().size());
         for (User u : currentUser.getFollowing()) {
             log.info("user: {}", u);
@@ -66,10 +65,10 @@ public class UserServiceJpaImpl implements UserService {
 
     @Override
     public void unFollowUser(String userName) {
-        User currentUser = sessionService.getCurrentUser();
+        User activeUser = sessionService.getActiveUser();
         User userToUnFollow = findByUserName(userName);
-        currentUser.unFollowUser(userToUnFollow);
-        userRepository.save(currentUser);
+        activeUser.unFollowUser(userToUnFollow);
+        userRepository.save(activeUser);
     }
 
 }

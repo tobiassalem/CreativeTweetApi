@@ -3,9 +3,10 @@ package se.salemcreative.twitapi.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
+import se.salemcreative.twitapi.service.SessionService;
 import se.salemcreative.twitapi.service.UserService;
 
 import java.util.List;
@@ -20,35 +21,54 @@ public class UserController {
     @Autowired
     UserService service;
 
+    @Autowired()
+    SessionService sessionService;
+
     @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() {
         log.info("Returning all user ");
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public User getTweetById(@PathVariable("id") Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserById(@PathVariable("id") Long id) {
         log.info("Returning user by id {}", id);
         return service.findById(id);
     }
 
     @GetMapping("/followers/{username}")
+    @ResponseStatus(HttpStatus.OK)
     public Set<User> getFollowers(@PathVariable("username") String userName) {
         log.info("Returning followers for user {}", userName);
         return service.findFollowers(userName);
     }
 
     @PostMapping("/follow/{username}")
-    public void followUser(@PathVariable("username") String userName) {
-        log.info("Following user " + userName);
+    @ResponseStatus(HttpStatus.OK)
+    public String followUser(@PathVariable("username") String userName) {
+        String feedback = "Following user " + userName;
+        log.info(feedback);
         service.followUser(userName);
+        return feedback;
     }
 
     @PostMapping("/un-follow/{username}")
-    public void unFollowUser(@PathVariable("username") String userName) {
-        log.info("Un-following user " + userName);
+    @ResponseStatus(HttpStatus.OK)
+    public String unFollowUser(@PathVariable("username") String userName) {
+        String feedback = "Un-following user " + userName;
+        log.info(feedback);
         service.unFollowUser(userName);
+        return feedback;
     }
 
+    @GetMapping("/active")
+    @ResponseStatus(HttpStatus.OK)
+    public String getActiveUser() {
+        User activeUser = sessionService.getActiveUser();
+        log.info("Returning active user {}", activeUser);
+        return activeUser.getUserName();
+    }
 
 }

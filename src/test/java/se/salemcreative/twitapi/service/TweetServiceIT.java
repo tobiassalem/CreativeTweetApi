@@ -11,9 +11,8 @@ import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 
 import java.util.List;
-import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,19 +44,19 @@ public class TweetServiceIT {
 
     @Test
     public void findByUserName() {
-        List<Tweet> byUserName = tweetService.findByUserName("Frodo");
+        List<Tweet> byUserName = tweetService.findByUserName("frodo");
         assertEquals(1, byUserName.size());
     }
 
     @Test
     public void tweet() {
-        final String userName = "Gandalf";
+        final String userName = "gandalf";
         final User user = userService.findByUserName(userName);
         int tweetCountBefore = tweetService.findByUserName(userName).size();
 
         tweetService.tweet(user, "test");
 
         int tweetCountAfter = tweetService.findByUserName(userName).size();
-        assertEquals(tweetCountBefore+1, tweetCountAfter);
+        assertEquals(tweetCountBefore + 1, tweetCountAfter);
     }
 }

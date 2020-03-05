@@ -18,75 +18,103 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TweetControllerTest {
+public class TweetControllerTest extends AbstractControllerTest {
 
-	@Autowired
-	private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-	@MockBean
-	TweetService tweetService;
+    @MockBean
+    TweetService tweetService;
 
-	@Test
-	public void findAll() throws Exception {
-		User wizard = new User("Gandalf");
-		Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
-		wisdom.setAuthor(wizard);
-		List<Tweet> allTweets = new ArrayList<>();
-		allTweets.add(wisdom);
+    /**
+     * Requests without an access token should get code 401 = Unauthorized
+     *
+     * @throws Exception
+     */
+    @Test
+    public void requestWithoutAccessTokenIsUnauthorized() throws Exception {
+        Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+        wisdom.setAuthor(wizard);
+        List<Tweet> allTweets = new ArrayList<>();
+        allTweets.add(wisdom);
 
-		when(tweetService.findAll()).thenReturn(allTweets);
+        when(tweetService.findAll()).thenReturn(allTweets);
 
-		mvc.perform(MockMvcRequestBuilders.get("/tweets/").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(1)))
-				.andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
-	}
+        mvc.perform(MockMvcRequestBuilders.get("/tweets/")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
 
-	@Test
-	public void findByUserName() throws Exception {
-		User wizard = new User("Gandalf");
-		Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
-		wisdom.setAuthor(wizard);
-		List<Tweet> userTweets = new ArrayList<>();
-		userTweets.add(wisdom);
+    @Test
+    public void findAll() throws Exception {
+        Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+        wisdom.setAuthor(wizard);
+        List<Tweet> allTweets = new ArrayList<>();
+        allTweets.add(wisdom);
 
-		when(tweetService.findByUserName(wizard.getUserName())).thenReturn(userTweets);
+        when(tweetService.findAll()).thenReturn(allTweets);
 
-		mvc.perform(MockMvcRequestBuilders.get("/tweets/users/Gandalf").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(1)))
-				.andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
-	}
+        String accessToken = generateToken("frodo");
+        mvc.perform(MockMvcRequestBuilders.get("/tweets/")
+                .header(AUTH_HEADER, JWT_PREFIX + accessToken)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
+    }
 
-	@Test
-	public void findById() throws Exception {
-		final Long id = 42L;
-		User wizard = new User("Gandalf");
-		Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
-		wisdom.setAuthor(wizard);
+    @Test
+    public void findByUserName() throws Exception {
+        Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+        wisdom.setAuthor(wizard);
+        List<Tweet> userTweets = new ArrayList<>();
+        userTweets.add(wisdom);
 
-		when(tweetService.findById(id)).thenReturn(wisdom);
+        when(tweetService.findByUserName(wizard.getUserName())).thenReturn(userTweets);
 
-		mvc.perform(MockMvcRequestBuilders.get("/tweets/"+id).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.message").value(wisdom.getMessage()));
-	}
+        String accessToken = generateToken("frodo");
+        mvc.perform(MockMvcRequestBuilders.get("/tweets/users/gandalf")
+                .header(AUTH_HEADER, JWT_PREFIX + accessToken)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
+    }
 
-	@Test
-	public void tweet() throws Exception {
-		final String message = "All we can do, is to decide what do with the time that is given to us...";
+    @Test
+    public void findById() throws Exception {
+        final Long id = 42L;
+        User wizard = new User("Gandalf");
+        Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+        wisdom.setAuthor(wizard);
 
-		mvc.perform(MockMvcRequestBuilders.post("/tweets/tweet")
-				.content(message)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+        when(tweetService.findById(id)).thenReturn(wisdom);
 
-		Mockito.verify(tweetService, Mockito.times(1))
-				.tweet(Mockito.any(User.class), Mockito.any(String.class));
-	}
+        String accessToken = generateToken("frodo");
+        mvc.perform(MockMvcRequestBuilders.get("/tweets/" + id)
+                .header(AUTH_HEADER, JWT_PREFIX + accessToken)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(wisdom.getMessage()));
+    }
+
+    @Test
+    public void tweet() throws Exception {
+        final String message = "All we can do, is to decide what do with the time that is given to us...";
+
+        String accessToken = generateToken("frodo");
+        mvc.perform(MockMvcRequestBuilders.post("/tweets/tweet")
+                .header(AUTH_HEADER, JWT_PREFIX + accessToken)
+                .content(message)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        Mockito.verify(tweetService, Mockito.times(1))
+                .tweet(Mockito.any(User.class), Mockito.any(String.class));
+    }
 }

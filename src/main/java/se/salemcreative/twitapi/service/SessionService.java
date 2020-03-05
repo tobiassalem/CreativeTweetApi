@@ -4,5 +4,7 @@ import se.salemcreative.twitapi.model.User;
 
 public interface SessionService {
 
-    User getCurrentUser();
+    User getActiveUser();
+
+    void setActiveUser(User user);
 }

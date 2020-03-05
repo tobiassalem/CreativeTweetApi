@@ -6,12 +6,83 @@
 	},
 	"item": [
 		{
+			"name": "Authenticate user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"frodo\",\n\t\"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/authenticate",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"authenticate"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU5MDYxNTE1OCwiaWF0IjoxNTgzNDE1MTU4fQ.4iUaX1nkPhVYiR-d3FbUONLCPRtJnLkMrydlRWZrEWB93m_ry6nuyEEk5zkaGTP9I8hpAITHeI5VMs3BJdy5dg",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{url}}/users/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get active user",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "{{url}}/users/active",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"active"
+					]
 				}
 			},
 			"response": []
@@ -40,14 +111,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/users/followers/Gandalf",
+					"raw": "{{url}}/users/followers/gandalf",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"users",
 						"followers",
-						"Gandalf"
+						"gandalf"
 					]
 				}
 			},
@@ -59,7 +130,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "/users/follow/gandalf",
+					"raw": "{{url}}/users/follow/gandalf",
+					"host": [
+						"{{url}}"
+					],
 					"path": [
 						"users",
 						"follow",
@@ -75,14 +149,14 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/users/un-follow/Gandalf",
+					"raw": "{{url}}/users/un-follow/gandalf",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"users",
 						"un-follow",
-						"Gandalf"
+						"gandalf"
 					]
 				}
 			},
@@ -130,13 +204,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/tweets/Frodo",
+					"raw": "{{url}}/tweets/users/frodo",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"tweets",
-						"Frodo"
+						"users",
+						"frodo"
 					]
 				}
 			},
@@ -163,6 +238,38 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU5MDYxNTE1OCwiaWF0IjoxNTgzNDE1MTU4fQ.4iUaX1nkPhVYiR-d3FbUONLCPRtJnLkMrydlRWZrEWB93m_ry6nuyEEk5zkaGTP9I8hpAITHeI5VMs3BJdy5dg",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8f958c5f-4c1b-4194-9e7a-0b73dac66fc7",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "11b4b048-0ed4-4628-8a26-4ab4dc642cac",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"protocolProfileBehavior": {}

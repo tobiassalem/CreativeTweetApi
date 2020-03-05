@@ -6,12 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +17,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserServiceIT {
+public class UserServiceIT extends AbstractServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceIT.class);
 
@@ -43,24 +41,31 @@ public class UserServiceIT {
     }
 
     @Test
+    @Transactional
     public void followUser() {
-        String userName = "Gandalf";
+        String userName = wizard.getUserName();
         userService.followUser(userName);
 
+        User currentUser = sessionService.getActiveUser();
         Set<User> followers = userService.findFollowers(userName);
-        User currentUser = sessionService.getCurrentUser();
 
-        log.info("followers.size " + followers.size());
-        log.info("currentUser: " + currentUser);
+        log.info("activeUser: {}", sessionService.getActiveUser());
+        log.info("followers of {} : {} ", userName, followers.size());
         assertTrue(followers.contains(currentUser));
     }
 
     @Test
+    @Transactional
     public void unFollowUser() {
-        String userName = "Gandalf";
+        String userName = wizard.getUserName();
+        log.info("activeUser: {}", sessionService.getActiveUser());
+        log.info("followers of {} : {} ", userName, userService.findFollowers(userName));
         userService.unFollowUser(userName);
 
         Set<User> followers = userService.findFollowers(userName);
-        assertFalse(followers.contains(sessionService.getCurrentUser()));
+
+        log.info("activeUser: {}", sessionService.getActiveUser());
+        log.info("followers of {} : {} ", userName, followers);
+        assertFalse(followers.contains(sessionService.getActiveUser()));
     }
 }
