@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import se.salemcreative.twitapi.jpa.TweetRepository;
 import se.salemcreative.twitapi.jpa.UserRepository;
+import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 
 import javax.transaction.Transactional;
@@ -19,13 +21,21 @@ public class TwitApiApplication {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	TweetRepository tweetRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(TwitApiApplication.class, args);
 	}
 
 	@Bean
 	@Transactional
-	public void initUsers() {
+	public void initData() {
+		initUsers();
+		initTweets();
+	}
+
+	private void initUsers() {
 		final User hobbit1 = new User("Frodo");
 		final User hobbit2 = new User("Bilbo");
 		final User hobbit3 = new User("Sam");
@@ -47,7 +57,17 @@ public class TwitApiApplication {
 		userRepository.save(orc3);
 		userRepository.save(wizard1);
 		userRepository.save(wizard2);
-
 		log.info("Persisted {} nr of users.", userRepository.count());
+	}
+
+	private void initTweets() {
+		final User hobbit = userRepository.findByUserName("Frodo");
+		final User wizard = userRepository.findByUserName("Gandalf");
+		final Tweet t1 = new Tweet(hobbit, "There and back again, a hobbit's tale.");
+		final Tweet t2 = new Tweet(wizard, "A wizard arrives exactly when he means to");
+
+		tweetRepository.save(t1);
+		tweetRepository.save(t2);
+		log.info("Persisted {} nr of tweets.", tweetRepository.count());
 	}
 }

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 import se.salemcreative.twitapi.service.UserService;
 
@@ -23,6 +24,12 @@ public class UserController {
     public List<User> getAllUsers() {
         log.info("Returning all user ");
         return service.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public User getTweetById(@PathVariable("id") Long id) {
+        log.info("Returning user by id {}", id);
+        return service.findById(id);
     }
 
     @GetMapping("/followers/{username}")

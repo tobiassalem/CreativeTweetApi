@@ -14,7 +14,6 @@ import se.salemcreative.twitapi.model.User;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringRunner.class)

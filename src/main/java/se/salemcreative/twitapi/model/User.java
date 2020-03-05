@@ -16,7 +16,7 @@ public class User {
     private final Logger log = LoggerFactory.getLogger(User.class);
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_name", unique = true, nullable = false, length = 200)
@@ -122,14 +122,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        log.info("Equals this {} with other {}", this, o);
-        return id.equals(user.id) &&
-                userName.equals(user.userName);
+        return userName.equals(user.userName);
     }
 
     @Override
     public int hashCode() {
-        //return Objects.hash(id, userName);
         return Objects.hash(userName);
     }
 

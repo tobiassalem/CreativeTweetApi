@@ -3,11 +3,9 @@ package se.salemcreative.twitapi.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.salemcreative.twitapi.model.Tweet;
+import se.salemcreative.twitapi.service.SessionService;
 import se.salemcreative.twitapi.service.TweetService;
 
 import java.util.List;
@@ -20,6 +18,9 @@ public class TweetController {
 
     @Autowired
     TweetService service;
+
+    @Autowired
+    SessionService sessionService;
 
     @GetMapping("/")
     public List<Tweet> getAllTweets() {
@@ -39,5 +40,10 @@ public class TweetController {
         return service.findByUserName(userName);
     }
 
+    @PostMapping("/tweet")
+    public void tweet(@RequestBody String message) {
+        log.info("Current user is tweeting {}", message);
+        service.tweet(sessionService.getCurrentUser(), message);
+    }
 
 }

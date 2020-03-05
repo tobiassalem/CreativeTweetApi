@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "8c0f5e37-3d98-41d7-a395-fb360ee09c70",
+		"name": "Creative Tweet API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user followers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/followers/Gandalf",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"followers",
+						"Gandalf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Follow user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "/users/follow/gandalf",
+					"path": [
+						"users",
+						"follow",
+						"gandalf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Un-follow user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/un-follow/Gandalf",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"un-follow",
+						"Gandalf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tweets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/tweets/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tweet by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/tweets/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user tweets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/tweets/Frodo",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"Frodo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tweet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "It is no small thing, to appreciate the little things in life"
+				},
+				"url": {
+					"raw": "{{url}}/tweets/tweet",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"tweet"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

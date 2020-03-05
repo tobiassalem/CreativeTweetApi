@@ -1,5 +1,7 @@
 package se.salemcreative.twitapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,9 +11,10 @@ import java.util.List;
 public class Tweet {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User author;
@@ -20,6 +23,7 @@ public class Tweet {
 
     private LocalDateTime timestamp;
 
+    @JsonIgnore
     @ManyToOne
     private Tweet inReplyTo;
 

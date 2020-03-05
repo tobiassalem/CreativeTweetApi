@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.salemcreative.twitapi.jpa.UserRepository;
+import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -26,6 +28,16 @@ public class UserServiceJpaImpl implements UserService {
     }
 
     @Override
+    public User findById(Long id) {
+        Optional<User> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            return  byId.get();
+        } else {
+            throw new RuntimeException("No User with id " +id+"  exists");
+        }
+    }
+
+    @Override
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
@@ -33,7 +45,6 @@ public class UserServiceJpaImpl implements UserService {
     public Set<User> findFollowers(String userName) {
         User byUserName = userRepository.findByUserName(userName);
         return byUserName.getFollowers();
-        //return userRepository.findFollowers(byUserName);
     }
 
     @Override

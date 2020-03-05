@@ -14,7 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import se.salemcreative.twitapi.jpa.UserRepository;
 import se.salemcreative.twitapi.model.User;
 
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -49,6 +51,7 @@ public class UserServiceTest {
 
     final User hobbit = new User("Frodo");
     final User wizard = new User("Gandalf");
+    final Long id = 1L;
 
     @Before
     public void setUp() {
@@ -56,6 +59,22 @@ public class UserServiceTest {
                 .thenReturn(hobbit);
         Mockito.when(userRepository.findByUserName(wizard.getUserName()))
                 .thenReturn(wizard);
+        Mockito.when(userRepository.findAll())
+                .thenReturn(Arrays.asList(hobbit, wizard));
+        Mockito.when(userRepository.findById(id))
+                .thenReturn(Optional.of(hobbit));
+    }
+
+    @Test
+    public void findAll() {
+        List<User> all = userService.findAll();
+        assertEquals(2, all.size());
+    }
+
+    @Test
+    public void findById() {
+        userService.findById(id);
+        Mockito.verify(userRepository, Mockito.times(1)).findById(Mockito.eq(id));
     }
 
     @Test

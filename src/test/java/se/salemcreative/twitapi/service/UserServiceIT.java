@@ -9,12 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 
+import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,6 +28,19 @@ public class UserServiceIT {
 
     @Autowired
     private SessionService sessionService;
+
+    @Test
+    public void findAll() {
+        List<User> all = userService.findAll();
+        assertEquals(8, all.size());
+    }
+
+    @Test
+    public void findById() {
+        final Long id = 1L;
+        User byId = userService.findById(id);
+        assertEquals(id, byId.getId());
+    }
 
     @Test
     public void followUser() {

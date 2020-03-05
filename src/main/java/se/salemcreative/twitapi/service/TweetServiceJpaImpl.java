@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.salemcreative.twitapi.jpa.TweetRepository;
 import se.salemcreative.twitapi.model.Tweet;
+import se.salemcreative.twitapi.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,4 +34,18 @@ public class TweetServiceJpaImpl implements TweetService {
             throw new RuntimeException("No Tweet by id " +id+"  exists");
         }
     }
+
+    @Override
+    public void tweet(User user, String message) {
+        Tweet tweet = new Tweet(user, message);
+        tweetRepository.save(tweet);
+    }
+
+    @Override
+    public void reply(User user, String message, Tweet inReplyTo) {
+        Tweet tweet = new Tweet(user, message);
+        tweet.setInReplyTo(inReplyTo);
+        tweetRepository.save(tweet);
+    }
+
 }

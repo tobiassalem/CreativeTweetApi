@@ -1,6 +1,7 @@
 package se.salemcreative.twitapi.controller;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,8 +69,6 @@ public class TweetControllerTest {
 		User wizard = new User("Gandalf");
 		Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
 		wisdom.setAuthor(wizard);
-		List<Tweet> userTweets = new ArrayList<>();
-		userTweets.add(wisdom);
 
 		when(tweetService.findById(id)).thenReturn(wisdom);
 
@@ -78,4 +77,16 @@ public class TweetControllerTest {
 				.andExpect(jsonPath("$.message").value(wisdom.getMessage()));
 	}
 
+	@Test
+	public void tweet() throws Exception {
+		final String message = "All we can do, is to decide what do with the time that is given to us...";
+
+		mvc.perform(MockMvcRequestBuilders.post("/tweets/tweet")
+				.content(message)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+
+		Mockito.verify(tweetService, Mockito.times(1))
+				.tweet(Mockito.any(User.class), Mockito.any(String.class));
+	}
 }
