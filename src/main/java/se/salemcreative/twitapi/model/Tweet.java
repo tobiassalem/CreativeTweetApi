@@ -103,6 +103,16 @@ public class Tweet {
 
     /* ================================== [Helpers] ================================================================ */
 
+    /**
+     * This callback hook method is called right after the entity is loaded.
+     * We use it to load any JPA relations that are not fetched eagerly.
+     * Concretely this solves the Hibernate limitation that it is not possible to eagerly load multiple collections.
+     */
+    @PostLoad
+    public void initRelations() {
+        this.replies.size();
+    }
+
     @Override
     public String toString() {
         return "Tweet{" +

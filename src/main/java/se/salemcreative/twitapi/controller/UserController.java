@@ -65,10 +65,10 @@ public class UserController {
 
     @GetMapping("/active")
     @ResponseStatus(HttpStatus.OK)
-    public String getActiveUser() {
+    public User getActiveUser() {
         User activeUser = sessionService.getActiveUser();
         log.info("Returning active user {}", activeUser);
-        return activeUser.getUserName();
+        return activeUser;
     }
 
 }

@@ -18,6 +18,7 @@ public class SessionServiceMockImpl implements SessionService {
     @Autowired
     UserRepository userRepository;
 
+    @Override
     public User getActiveUser() {
         if (activeUser == null) {
             activeUser = userRepository.findByUserName(defaultUserName);

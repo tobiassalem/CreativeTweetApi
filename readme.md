@@ -2,7 +2,7 @@
 
 A simple application to illustrate how to build a backend API. It is built using Spring Boot and the Maven build manager.
 Feature wise this is a Twitter-like API/service, which supports the following requests:
-* Authenticate user: POST /authenticate [Request body is user object with username and password]
+* Authenticate user: POST /authenticate [Request body is JSON object with username and password]
 * Get a list of users: GET /users/
 * Get user by id: GET /users/{id}
 * Get a list of people following a user: GET /users/followers/{username}
@@ -21,6 +21,7 @@ This access token should be present as a http header with details as stated belo
 
 Concretely, see the Postman collection for details. We here naturally set up authorization on the collection level,
 so we do not need to set it on each individual request (when using Postman).
+Example of users are: frodo, bilbo, gandalf. They all have 'password' as password.
 
 The token lives for 2 hours. Remember that when the token times out, or you authenticate another user with /authenticate,
 you need to update the access token (on the Postman collection, or on individual requests).
@@ -50,6 +51,7 @@ The possible improvements to the application are naturally many. The most releva
 * Implement more features, like creating users, finding the highest trending keyword.
 * Improve user and session management. Concretely a logout feature which invalidates the last access token.
 * Improve security. Concretely store hashed passwords in the database.
+* Implement DTO's or alternatively customized JSON parsers to decide exactly what data to present to the frontend. 
 
 ### Implemented improvements
 * Tweet and reply feature.
