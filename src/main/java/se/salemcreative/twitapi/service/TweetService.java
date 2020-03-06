@@ -15,6 +15,6 @@ public interface TweetService {
 
     void tweet(User user, String message);
 
-    void reply(User user, String message, Tweet inReplyTo);
+    void reply(User user, String message, Long inReplyToId);
 
 }

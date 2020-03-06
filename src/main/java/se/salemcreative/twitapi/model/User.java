@@ -3,6 +3,7 @@ package se.salemcreative.twitapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.salemcreative.twitapi.exception.TweetApiUserException;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -88,8 +89,8 @@ public class User {
 
     public void followUser(User u) {
         if (u == null || u.equals(this)) {
-            log.error("You can only follow other users! You are trying to follow {}", u);
-            return;
+            log.error("User {} tried to follow an invalid user. Non-existent or himself/herself {}", userName, u);
+            throw new TweetApiUserException("You can only follow other users! You are trying to follow " + u);
         }
         if (following.contains(u)) {
             log.warn("You are already following {}", u);
@@ -103,8 +104,8 @@ public class User {
 
     public void unFollowUser(User u) {
         if (u == null) {
-            log.warn("No user to unfollow {}", u);
-            return;
+            log.warn("User {} tried to un-follow a non-existent user", userName, u);
+            throw new TweetApiUserException("User you tried to un-follow does not exist " + u);
         }
         if (!following.contains(u)) {
             log.warn("You are not following {}", u);

@@ -12,6 +12,7 @@ Feature wise this is a Twitter-like API/service, which supports the following re
 * Get tweet by id: GET /tweets/{id}
 * Get a list of tweets by user: GET /tweets/{username}
 * Post a tweet: POST /tweets/tweet [Request body is the message]
+* Reply to a tweet: POST /tweets/{id}/reply [Request body is the message]
  
 Note that all requests now are required to have the access token given by the /authenticate request.
 This access token should be present as a http header with details as stated below. 
@@ -34,18 +35,28 @@ you need to update the access token (on the Postman collection, or on individual
 * The application is hosted on Heroku as https://creative-tweet-api.herokuapp.com
 * To perform the service calls a REST client like Postman is highly recommended. A Postman collection is included for your convenience.
 
+A typical use case is the following:
+* POST {{url}}/authenticate to get an access token to add to all requests
+* GET {{url}}/users/active              - confirm that you are active user frodo
+* GET {{url}}/users/followers/gandalf   - confirm gandalf has no followers
+* POST {{url}}/users/follow/gandalf     - follow gandalf     
+* GET {{url}}/users/followers/gandalf   - confirm gandalf now has one follower
+* POST {{url}}/users/un-follow/gandalf  - un-follow gandalf
+* GET {{url}}/users/followers/gandalf   - confirm gandalf again has no followers
+
 ### Possible improvements
 The possible improvements to the application are naturally many. The most relevant can easily be the following.
 
-* On getting tweets of a user, include both self-tweet and replies by followers.
-* Implement more features, like creating users, replying, finding the highest trending keyword.
-* Implement an exception management.
+* Implement more features, like creating users, finding the highest trending keyword.
 * Improve user and session management. Concretely a logout feature which invalidates the last access token.
+* Improve security. Concretely store hashed passwords in the database.
 
 ### Implemented improvements
-* Tweet feature.
+* Tweet and reply feature.
+* When viewing a tweet, either individually or as a list, the replies are included.
 * Authentication with access tokens [concretely JWT].
 * User and session management.
+* Exception management
         
 ### References
 * Spring Boot - @See https://spring.io/projects/spring-boot

@@ -16,7 +16,7 @@ public class Tweet {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
     private String message;
@@ -34,7 +34,8 @@ public class Tweet {
     )
     private List<Tweet> replies = new ArrayList<>();
 
-    public Tweet() {}
+    public Tweet() {
+    }
 
     public Tweet(User author, String message) {
         this.author = author;
@@ -90,14 +91,14 @@ public class Tweet {
 
     /* ================================== [Logic] ================================================================= */
 
-    public void addReply(Tweet comment) {
-        replies.add(comment);
-        comment.setInReplyTo(this);
+    public void addReply(Tweet reply) {
+        replies.add(reply);
+        reply.setInReplyTo(this);
     }
 
-    public void removeReply(Tweet comment) {
-        replies.remove(comment);
-        comment.setInReplyTo(null);
+    public void removeReply(Tweet reply) {
+        replies.remove(reply);
+        reply.setInReplyTo(null);
     }
 
     /* ================================== [Helpers] ================================================================ */

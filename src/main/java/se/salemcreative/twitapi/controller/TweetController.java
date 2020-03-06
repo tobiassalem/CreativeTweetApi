@@ -51,4 +51,11 @@ public class TweetController {
         service.tweet(sessionService.getActiveUser(), message);
     }
 
+    @PostMapping("/{id}/reply")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void reply(@PathVariable("id") Long id, @RequestBody String message) {
+        log.info("Active user is replying to a tweet {}", message);
+        service.reply(sessionService.getActiveUser(), message, id);
+    }
+
 }

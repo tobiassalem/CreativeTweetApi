@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.salemcreative.twitapi.exception.TweetApiSystemException;
 import se.salemcreative.twitapi.jpa.UserRepository;
 import se.salemcreative.twitapi.model.User;
 
@@ -32,7 +33,7 @@ public class UserServiceJpaImpl implements UserService {
         if (byId.isPresent()) {
             return byId.get();
         } else {
-            throw new RuntimeException("No User with id " + id + "  exists");
+            throw new TweetApiSystemException("User with id " + id + " does not exist.");
         }
     }
 

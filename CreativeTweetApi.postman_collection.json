@@ -238,6 +238,29 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Reply",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Yes I agree, and have this to add on the subject..."
+				},
+				"url": {
+					"raw": "{{url}}/tweets/1/reply",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"1",
+						"reply"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -245,7 +268,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU5MDYxNTE1OCwiaWF0IjoxNTgzNDE1MTU4fQ.4iUaX1nkPhVYiR-d3FbUONLCPRtJnLkMrydlRWZrEWB93m_ry6nuyEEk5zkaGTP9I8hpAITHeI5VMs3BJdy5dg",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU4MzQ5NjY1MCwiaWF0IjoxNTgzNDg5NDUwfQ.nNmA2VsrkOHT4iDq_5EgRKQEhALJEMWGA5Wm9Rdm90bEfoT1ut6T3h3AG113Jcw0pytizlNrYbwjMzPbptotNQ",
 				"type": "string"
 			}
 		]

@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 public class TweetServiceTest {
@@ -109,6 +109,13 @@ public class TweetServiceTest {
     @Test
     public void tweet() {
         tweetService.tweet(hobbit, "Once upon a time there was a hobbit");
+
+        Mockito.verify(tweetRepository, Mockito.times(1)).save(Mockito.any(Tweet.class));
+    }
+
+    @Test
+    public void reply() {
+        tweetService.reply(hobbit, "Yes I agree...", 1L);
 
         Mockito.verify(tweetRepository, Mockito.times(1)).save(Mockito.any(Tweet.class));
     }

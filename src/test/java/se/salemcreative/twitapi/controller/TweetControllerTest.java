@@ -59,7 +59,7 @@ public class TweetControllerTest extends AbstractControllerTest {
 
         when(tweetService.findAll()).thenReturn(allTweets);
 
-        String accessToken = generateToken("frodo");
+        String accessToken = generateToken(hobbit.getUserName());
         mvc.perform(MockMvcRequestBuilders.get("/tweets/")
                 .header(AUTH_HEADER, JWT_PREFIX + accessToken)
                 .accept(MediaType.APPLICATION_JSON))
@@ -77,7 +77,7 @@ public class TweetControllerTest extends AbstractControllerTest {
 
         when(tweetService.findByUserName(wizard.getUserName())).thenReturn(userTweets);
 
-        String accessToken = generateToken("frodo");
+        String accessToken = generateToken(hobbit.getUserName());
         mvc.perform(MockMvcRequestBuilders.get("/tweets/users/gandalf")
                 .header(AUTH_HEADER, JWT_PREFIX + accessToken)
                 .accept(MediaType.APPLICATION_JSON))
@@ -89,13 +89,12 @@ public class TweetControllerTest extends AbstractControllerTest {
     @Test
     public void findById() throws Exception {
         final Long id = 42L;
-        User wizard = new User("Gandalf");
         Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
         wisdom.setAuthor(wizard);
 
         when(tweetService.findById(id)).thenReturn(wisdom);
 
-        String accessToken = generateToken("frodo");
+        String accessToken = generateToken(hobbit.getUserName());
         mvc.perform(MockMvcRequestBuilders.get("/tweets/" + id)
                 .header(AUTH_HEADER, JWT_PREFIX + accessToken)
                 .accept(MediaType.APPLICATION_JSON))
@@ -107,7 +106,7 @@ public class TweetControllerTest extends AbstractControllerTest {
     public void tweet() throws Exception {
         final String message = "All we can do, is to decide what do with the time that is given to us...";
 
-        String accessToken = generateToken("frodo");
+        String accessToken = generateToken(hobbit.getUserName());
         mvc.perform(MockMvcRequestBuilders.post("/tweets/tweet")
                 .header(AUTH_HEADER, JWT_PREFIX + accessToken)
                 .content(message)
@@ -116,5 +115,24 @@ public class TweetControllerTest extends AbstractControllerTest {
 
         Mockito.verify(tweetService, Mockito.times(1))
                 .tweet(Mockito.any(User.class), Mockito.any(String.class));
+    }
+
+    @Test
+    public void reply() throws Exception {
+        final Long id = 1L;
+        final String message = "I Agree, and I have this to add to the subject...";
+
+        Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+        when(tweetService.findById(id)).thenReturn(wisdom);
+
+        String accessToken = generateToken(hobbit.getUserName());
+        mvc.perform(MockMvcRequestBuilders.post("/tweets/1/reply")
+                .header(AUTH_HEADER, JWT_PREFIX + accessToken)
+                .content(message)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        Mockito.verify(tweetService, Mockito.times(1))
+                .reply(Mockito.any(User.class), Mockito.any(String.class), Mockito.anyLong());
     }
 }
