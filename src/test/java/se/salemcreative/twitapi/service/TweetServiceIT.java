@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import se.salemcreative.twitapi.model.Tweet;
+import se.salemcreative.twitapi.model.TweetStats;
 import se.salemcreative.twitapi.model.User;
 
 import javax.transaction.Transactional;
@@ -33,7 +34,7 @@ public class TweetServiceIT extends AbstractServiceTest {
     @Test
     public void findAll() {
         List<Tweet> all = tweetService.findAll();
-        assertEquals(2, all.size());
+        assertEquals(12, all.size());
     }
 
     @Test
@@ -46,7 +47,7 @@ public class TweetServiceIT extends AbstractServiceTest {
     @Test
     public void findByUserName() {
         List<Tweet> byUserName = tweetService.findByUserName("frodo");
-        assertEquals(1, byUserName.size());
+        assertEquals(2, byUserName.size());
     }
 
     @Test
@@ -76,8 +77,35 @@ public class TweetServiceIT extends AbstractServiceTest {
         assertEquals(replyCountBefore + 1, replyCountAfter);
     }
 
+    @Test
+    public void getKeywordStats() {
+        final int expectedNrOfKeywords = 3;
+        final Long expectedWisdomCount = 9L;
+        final Long expectedStorytellingCount = 2L;
+        final Long expectedCorruptionCount = 1L;
+        TweetStats tweetStats = tweetService.getTweetStats();
+
+        assertEquals(expectedNrOfKeywords, tweetStats.getKeywordStats().size());
+        assertEquals(expectedWisdomCount, tweetStats.getKeywordStats().get("#wisdom"));
+        assertEquals(expectedStorytellingCount, tweetStats.getKeywordStats().get("#storytelling"));
+        assertEquals(expectedCorruptionCount, tweetStats.getKeywordStats().get("#corruption"));
+    }
+
+    @Test
+    public void getUserStats() {
+        final Long expectedHobbitCount = 2L;
+        final Long expectedWizardCount = 8L;
+        final Long expectedOrcCount = 1L;
+        TweetStats tweetStats = tweetService.getTweetStats();
+
+        assertEquals(expectedHobbitCount, tweetStats.getUserStats().get(hobbit.getUserName()));
+        assertEquals(expectedWizardCount, tweetStats.getUserStats().get(wizard.getUserName()));
+        assertEquals(expectedOrcCount, tweetStats.getUserStats().get(orc.getUserName()));
+    }
+
     private int getReplyCount(final Long id) {
         Tweet byId = tweetService.findById(id);
         return byId.getReplies().size();
     }
 }
+

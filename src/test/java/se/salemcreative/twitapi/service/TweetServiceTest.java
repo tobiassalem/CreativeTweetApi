@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import se.salemcreative.twitapi.jpa.TweetRepository;
 import se.salemcreative.twitapi.jpa.UserRepository;
 import se.salemcreative.twitapi.model.Tweet;
+import se.salemcreative.twitapi.model.TweetStats;
 import se.salemcreative.twitapi.model.User;
 
 import java.util.ArrayList;
@@ -109,15 +110,18 @@ public class TweetServiceTest {
     @Test
     public void tweet() {
         tweetService.tweet(hobbit, "Once upon a time there was a hobbit");
-
         Mockito.verify(tweetRepository, Mockito.times(1)).save(Mockito.any(Tweet.class));
     }
 
     @Test
     public void reply() {
         tweetService.reply(hobbit, "Yes I agree...", 1L);
-
         Mockito.verify(tweetRepository, Mockito.times(1)).save(Mockito.any(Tweet.class));
+    }
+
+    public void getTweetStats() {
+        TweetStats tweetStats = tweetService.getTweetStats();
+        Mockito.verify(tweetRepository, Mockito.times(1)).findAll();
     }
 
     private void assertAllByAuthor(List<Tweet> tweets, String author) {

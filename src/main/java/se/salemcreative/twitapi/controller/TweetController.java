@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import se.salemcreative.twitapi.model.Tweet;
+import se.salemcreative.twitapi.model.TweetStats;
 import se.salemcreative.twitapi.service.SessionService;
 import se.salemcreative.twitapi.service.TweetService;
 
@@ -56,6 +57,13 @@ public class TweetController {
     public void reply(@PathVariable("id") Long id, @RequestBody String message) {
         log.info("Active user is replying to a tweet {}", message);
         service.reply(sessionService.getActiveUser(), message, id);
+    }
+
+    @GetMapping("/trending")
+    @ResponseStatus(HttpStatus.OK)
+    public TweetStats getTweetStats() {
+        log.info("Returning tweet stats");
+        return service.getTweetStats();
     }
 
 }

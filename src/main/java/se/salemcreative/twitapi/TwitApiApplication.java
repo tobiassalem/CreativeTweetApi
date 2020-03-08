@@ -12,6 +12,8 @@ import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.User;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class TwitApiApplication {
@@ -62,12 +64,26 @@ public class TwitApiApplication {
 
     private void initTweets() {
         final User hobbit = userRepository.findByUserName("frodo");
+        final User hobbitFriend = userRepository.findByUserName("sam");
         final User wizard = userRepository.findByUserName("gandalf");
-        final Tweet t1 = new Tweet(hobbit, "There and back again, a hobbit's tale.");
-        final Tweet t2 = new Tweet(wizard, "A wizard arrives exactly when he means to");
+        final User orc = userRepository.findByUserName("drumph");
+        final List<Tweet> tweets = new ArrayList<>();
+        tweets.add(new Tweet(hobbit, "How do you pick up the threads of an old life, when in your heart you begin to understand, there is no going back... #storytelling"));
+        tweets.add(new Tweet(hobbit, "I feel that as long as the Shire lies behind, safe and comfortable, I shall wander more bearable... #storytelling"));
+        tweets.add(new Tweet(hobbitFriend, "It is no small thing to appreciate the little things in life. #wisdom"));
+        tweets.add(new Tweet(wizard, "A wizard arrives precisely when he means to. #wisdom"));
+        tweets.add(new Tweet(wizard, "The difference between ignorance and skill is practice. " +
+                "The difference between skill and mastery, is time. #wisdom"));
+        tweets.add(new Tweet(wizard, "It is the small everyday deeds of ordinary folk that keep the darkness at bay. #wisdom"));
+        tweets.add(new Tweet(wizard, "The biggest risk is not taking any risk. #wisdom"));
+        tweets.add(new Tweet(wizard, "Everything is temporary. #wisdom"));
+        tweets.add(new Tweet(wizard, "Beneath hate there is always fear. #wisdom"));
+        tweets.add(new Tweet(wizard, "Hate is the most useless emotion, destructive to the mind and hurtful to the heart. #wisdom"));
+        tweets.add(new Tweet(wizard, "A lifetime is not so long as you think. #wisdom"));
+        tweets.add(new Tweet(orc, "In my corrupted world, the truth become lies, and twisted lies become truth. #corruption"));
 
-        tweetRepository.save(t1);
-        tweetRepository.save(t2);
+        tweetRepository.saveAll(tweets);
         log.info("Persisted {} nr of tweets.", tweetRepository.count());
     }
 }
+

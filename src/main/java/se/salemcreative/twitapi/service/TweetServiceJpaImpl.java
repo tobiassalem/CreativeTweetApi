@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import se.salemcreative.twitapi.exception.TweetApiSystemException;
 import se.salemcreative.twitapi.jpa.TweetRepository;
 import se.salemcreative.twitapi.model.Tweet;
+import se.salemcreative.twitapi.model.TweetStats;
 import se.salemcreative.twitapi.model.User;
 
 import java.util.List;
@@ -50,4 +51,32 @@ public class TweetServiceJpaImpl implements TweetService {
         tweetRepository.save(tweet);
     }
 
+    @Override
+    public TweetStats getTweetStats() {
+        TweetStats stats = new TweetStats();
+
+        List<Tweet> all = findAll();
+        for (Tweet t : all) {
+            stats.addUserOccurence(t.getAuthor().getUserName());
+            String message = t.getMessage();
+            if (message.contains("#")) {
+                String keyword = extractKeyword(message);
+                stats.addKeywordOccurance(keyword);
+            }
+        }
+        return stats;
+    }
+
+    private String extractKeyword(String message) {
+        int startIndex = message.indexOf("#");
+        int endIndex = message.indexOf(" ", startIndex);
+        String keyword;
+        if (endIndex > 0) {
+            keyword = message.substring(startIndex, endIndex);
+        } else {
+            keyword = message.substring(startIndex);
+        }
+        System.out.println("---> Found keyword: " + keyword);
+        return keyword;
+    }
 }

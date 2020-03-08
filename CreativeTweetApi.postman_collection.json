@@ -218,6 +218,24 @@
 			"response": []
 		},
 		{
+			"name": "Get tweet stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/tweets/trending",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"trending"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Tweet",
 			"request": {
 				"method": "POST",
@@ -268,7 +286,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU4MzQ5NjY1MCwiaWF0IjoxNTgzNDg5NDUwfQ.nNmA2VsrkOHT4iDq_5EgRKQEhALJEMWGA5Wm9Rdm90bEfoT1ut6T3h3AG113Jcw0pytizlNrYbwjMzPbptotNQ",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU4MzY3OTI0OSwiaWF0IjoxNTgzNjcyMDQ5fQ.JtoRjQX9lWU6p08zYitD435QPOHgmaAC6tHRCjRKrBi_IBPm7BXviCIIOIKJoWGYa5GsPt6LcX2flzBQR-IA6Q",
 				"type": "string"
 			}
 		]
