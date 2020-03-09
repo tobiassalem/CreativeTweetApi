@@ -13,17 +13,18 @@ Feature wise this is a Twitter-like API/service, which supports the following re
 * Get a list of tweets by user: GET /tweets/{username}
 * Post a tweet: POST /tweets/tweet [Request body is the message]
 * Reply to a tweet: POST /tweets/{id}/reply [Request body is the message]
+* Get trending keywords: POST /tweets/trending
  
-Note that all requests now are required to have the access token given by the /authenticate request.
+Note that all requests are required to have the access token given by the /authenticate request.
 This access token should be present as a http header with details as stated below. 
 * key "Authorization" [http standard]
 * value on the form "Bearer <token>" [JWT standard]
 
 Concretely, see the Postman collection for details. We here naturally set up authorization on the collection level,
 so we do not need to set it on each individual request (when using Postman).
-Example of users are: frodo, bilbo, gandalf. They all have 'password' as password.
+Existing users are: frodo, bilbo, sam, gandalf, saruman. They all have 'password' as password.
 
-The token lives for 2 hours. Remember that when the token times out, or you authenticate another user with /authenticate,
+The access token lives for 2 hours. Remember that when the token times out, or you authenticate another user with /authenticate,
 you need to update the access token (on the Postman collection, or on individual requests).
  
 ### Building
@@ -31,9 +32,9 @@ you need to update the access token (on the Postman collection, or on individual
 * Build with mvn install.
 
 ### Running
-* Run the Spring Boot application file in your favorite IDE. You run it with java -jar target/tasklist-service-1.0-SNAPSHOT.jar server tasklist-service.yml.
+* Run the Spring Boot application file in your favorite IDE. The main class is TwitApiApplication.
 * Access the REST services on http://localhost:8080/
-* The application is hosted on Heroku as https://creative-tweet-api.herokuapp.com
+* The application is also hosted on Heroku as https://creative-tweet-api.herokuapp.com
 * To perform the service calls a REST client like Postman is highly recommended. A Postman collection is included for your convenience.
 
 A typical use case is the following:
@@ -48,7 +49,7 @@ A typical use case is the following:
 ### Possible improvements
 The possible improvements to the application are naturally many. The most relevant can easily be the following.
 
-* Implement more features, like creating users, finding the highest trending keyword.
+* Implement more features, like creating users and searching tweets.
 * Improve user and session management. Concretely a logout feature which invalidates the last access token.
 * Improve security. Concretely store hashed passwords in the database.
 * Implement DTO's or alternatively customized JSON parsers to decide exactly what data to present to the frontend. 
@@ -59,6 +60,7 @@ The possible improvements to the application are naturally many. The most releva
 * Authentication with access tokens [concretely JWT].
 * User and session management.
 * Exception management
+* Tweet stats feature, concretely keyword stats and active user stats.
         
 ### References
 * Spring Boot - @See https://spring.io/projects/spring-boot
