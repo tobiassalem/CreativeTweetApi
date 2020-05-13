@@ -103,6 +103,28 @@ public class TweetServiceIT extends AbstractServiceTest {
         assertEquals(expectedOrcCount, tweetStats.getUserStats().get(orc.getUserName()));
     }
 
+    @Test
+    public void findByContent_given_existing_content_ignoring_case_find_expected_matches() {
+        final String content = "shire";
+        List<Tweet> byContent = tweetService.findByContent(content);
+        assertEquals(1, byContent.size());
+        assertAllTweetsContain(byContent, content);
+    }
+
+    @Test
+    public void findByContent_given_non_existing_content_find_no_matches() {
+        final String content = "does_not_exist";
+        List<Tweet> byContent = tweetService.findByContent(content);
+        assertEquals(0, byContent.size());
+        assertAllTweetsContain(byContent, content);
+    }
+
+    private void assertAllTweetsContain(List<Tweet> byContent, String content) {
+        for (Tweet t : byContent) {
+            t.getMessage().toLowerCase().contains(content.toLowerCase());
+        }
+    }
+
     private int getReplyCount(final Long id) {
         Tweet byId = tweetService.findById(id);
         return byId.getReplies().size();

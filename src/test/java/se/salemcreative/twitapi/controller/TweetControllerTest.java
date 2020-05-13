@@ -53,9 +53,11 @@ public class TweetControllerTest extends AbstractControllerTest {
     @Test
     public void findAll() throws Exception {
         Tweet wisdom = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
+        Tweet wisdom2 = new Tweet(wizard, "All we can do, is to decide what do with the time that is given to us...");
         wisdom.setAuthor(wizard);
         List<Tweet> allTweets = new ArrayList<>();
         allTweets.add(wisdom);
+        allTweets.add(wisdom2);
 
         when(tweetService.findAll()).thenReturn(allTweets);
 
@@ -64,7 +66,7 @@ public class TweetControllerTest extends AbstractControllerTest {
                 .header(AUTH_HEADER, JWT_PREFIX + accessToken)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].message").value(wisdom.getMessage()));
     }
 

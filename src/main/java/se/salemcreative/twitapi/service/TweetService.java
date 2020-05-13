@@ -20,4 +20,7 @@ public interface TweetService {
 
     TweetStats getTweetStats();
 
+    List<Tweet> findByContent(String text);
+
+    List<Tweet> findByCriteria(String criteria);
 }

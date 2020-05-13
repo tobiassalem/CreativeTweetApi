@@ -66,4 +66,14 @@ public class TweetController {
         return service.getTweetStats();
     }
 
+    @GetMapping("/search/{text}")
+    public List<Tweet> searchTweets(@PathVariable("text") String text) {
+        return service.findByContent(text);
+    }
+
+    @GetMapping("/searchV2/{criteria}")
+    public List<Tweet> searchTweetsV2(@PathVariable("criteria") String criteria) {
+        return service.findByCriteria(criteria);
+    }
+
 }

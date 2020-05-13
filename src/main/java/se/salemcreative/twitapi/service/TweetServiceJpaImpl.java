@@ -1,6 +1,7 @@
 package se.salemcreative.twitapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import se.salemcreative.twitapi.exception.TweetApiSystemException;
 import se.salemcreative.twitapi.jpa.TweetRepository;
@@ -8,6 +9,7 @@ import se.salemcreative.twitapi.model.Tweet;
 import se.salemcreative.twitapi.model.TweetStats;
 import se.salemcreative.twitapi.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +67,43 @@ public class TweetServiceJpaImpl implements TweetService {
             }
         }
         return stats;
+    }
+
+    @Override
+    public List<Tweet> findByContent(String text) {
+        return tweetRepository.findByMessageContainingIgnoreCase(text);
+    }
+
+    /**
+     * Given criteria, we perform Google Style search
+     * Example: "once upon a time" there was a hobbit
+     */
+    @Override
+    public List<Tweet> findByCriteria(String criteria) {
+        List<String> tokens = ValueHelper.splitStringGoogleStyle(criteria);
+        Specification<Tweet> specification = buildTweetSpecification(tokens);
+        return tweetRepository.findAll(specification);
+    }
+
+    private Specification<Tweet> buildTweetSpecification(List<String> tokens) {
+        List<Specification<Tweet>> andSpecifications = new ArrayList<>();
+        for (String t : tokens) {
+            andSpecifications.add(TweetSpecification.hasMessageLikeIgnoringCase(t));
+        }
+        return buildCompoundAndSpecification(andSpecifications);
+    }
+
+    private Specification<Tweet> buildCompoundAndSpecification(List<Specification<Tweet>> andSpecifications) {
+        Specification<Tweet> compoundAndSpec = null;
+        boolean firstSpec = true;
+        for (Specification<Tweet> spec : andSpecifications) {
+            if (firstSpec) {
+                compoundAndSpec = Specification.where(spec);
+            } else {
+                compoundAndSpec = compoundAndSpec.and(spec);
+            }
+        }
+        return compoundAndSpec;
     }
 
     private String extractKeyword(String message) {

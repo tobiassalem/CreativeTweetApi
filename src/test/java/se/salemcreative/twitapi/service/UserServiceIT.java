@@ -40,6 +40,10 @@ public class UserServiceIT extends AbstractServiceTest {
         assertEquals(id, byId.getId());
     }
 
+    /**
+     * 1) follow user
+     * 2) assert user is fallowed
+     */
     @Test
     @Transactional
     public void followUser() {
