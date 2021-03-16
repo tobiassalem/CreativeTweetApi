@@ -32,7 +32,7 @@ you need to update the access token (on the Postman collection, or on individual
 * Build with mvn install.
 
 ### Running
-* Run the Spring Boot application file in your favorite IDE. The main class is TwitApiApplication.
+* Run the Spring Boot application file in your favorite IDE. The main class is TweetApiApplication.
 * Access the REST services on http://localhost:8080/
 * The application is also hosted on Heroku as https://creative-tweet-api.herokuapp.com
 * To perform the service calls a REST client like Postman is highly recommended. A Postman collection is included for your convenience.

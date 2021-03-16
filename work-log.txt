@@ -19,9 +19,9 @@ org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepa
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
 	at com.sun.proxy.$Proxy135.findByUserName(Unknown Source)
-	at se.salemcreative.twitapi.service.SessionServiceMockImpl.getCurrentUser(SessionServiceMockImpl.java:20)
-	at se.salemcreative.twitapi.service.UserServiceJpaImpl.followUser(UserServiceJpaImpl.java:41)
-	at se.salemcreative.twitapi.service.UserServiceIT.followUser(UserServiceIT.java:34)
+	at se.salemcreative.tweetapi.service.SessionServiceMockImpl.getCurrentUser(SessionServiceMockImpl.java:20)
+	at se.salemcreative.tweetapi.service.UserServiceJpaImpl.followUser(UserServiceJpaImpl.java:41)
+	at se.salemcreative.tweetapi.service.UserServiceIT.followUser(UserServiceIT.java:34)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -50,21 +50,21 @@ insert into user (user_name, id) values (?, ?) [23505-200]]; nested exception is
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.2.4.RELEASE.jar:5.2.4.RELEASE]
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212) ~[spring-aop-5.2.4.RELEASE.jar:5.2.4.RELEASE]
 	at com.sun.proxy.$Proxy135.count(Unknown Source) ~[na:na]
-	at se.salemcreative.twitapi.TwitApiApplication.initUsers(TwitApiApplication.java:53) ~[classes/:na]
+	at se.salemcreative.tweetapi.TweetApiApplication.initUsers(TwitApiApplication.java:53) ~[classes/:na]
 	
 SOLUTION:
 Test data cleanup.
 
 
 ISSUE:
-org.springframework.dao.InvalidDataAccessApiUsageException: Multiple representations of the same entity [se.salemcreative.twitapi.model.User#2] are being merged. 
+org.springframework.dao.InvalidDataAccessApiUsageException: Multiple representations of the same entity [se.salemcreative.tweetapi.model.User#2] are being merged.
 
 
 Detached: [User{id=2, userName='Gandalf', following= 0, followers= 3}]; 
 Detached: [User{id=2, userName='Gandalf', following= 0, followers= 4}]; 
 
 
-nested exception is java.lang.IllegalStateException: Multiple representations of the same entity [se.salemcreative.twitapi.model.User#2] are being merged. 
+nested exception is java.lang.IllegalStateException: Multiple representations of the same entity [se.salemcreative.tweetapi.model.User#2] are being merged.
 
 Detached: [User{id=2, userName='Gandalf', following= 0, followers= 3}]; Detached:
  [User{id=2, userName='Gandalf', following= 0, followers= 4}]
@@ -82,8 +82,8 @@ Detached: [User{id=2, userName='Gandalf', following= 0, followers= 3}]; Detached
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:212)
 	at com.sun.proxy.$Proxy126.save(Unknown Source)
-	at se.salemcreative.twitapi.service.UserServiceJpaImpl.followUser(UserServiceJpaImpl.java:39)
-	at se.salemcreative.twitapi.service.UserServiceIT.followUser(UserServiceIT.java:37)
+	at se.salemcreative.tweetapi.service.UserServiceJpaImpl.followUser(UserServiceJpaImpl.java:39)
+	at se.salemcreative.tweetapi.service.UserServiceIT.followUser(UserServiceIT.java:37)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
