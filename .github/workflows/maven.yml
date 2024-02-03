@@ -13,8 +13,7 @@ on:
     # Sequence of patterns matched against refs/heads
     branches-ignore:
       - master
-      - release*  
-    branches: [ "feature/*", "hotfix/*", "fix/*" ]
+      - release*
   pull_request:
     branches: [ "master" ]
 
