@@ -21,12 +21,12 @@ public class TweetServiceJpaImpl implements TweetService {
 
     @Override
     public List<Tweet> findAll() {
-        return tweetRepository.findAll();
+        return tweetRepository.findAllByOrderByTimestampDesc();
     }
 
     @Override
     public List<Tweet> findByUserName(String userName) {
-        return tweetRepository.findByAuthorUserName(userName);
+        return tweetRepository.findByAuthorUserNameOrderByTimestampDesc(userName);
     }
 
     @Override

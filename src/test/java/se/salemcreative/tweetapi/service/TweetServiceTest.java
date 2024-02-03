@@ -76,9 +76,9 @@ public class TweetServiceTest {
         all.add(t2);
         Mockito.when(tweetRepository.findAll())
                 .thenReturn(all);
-        Mockito.when(tweetRepository.findByAuthorUserName("Frodo"))
+        Mockito.when(tweetRepository.findByAuthorUserNameOrderByTimestampDesc("Frodo"))
                 .thenReturn(Arrays.asList(t1));
-        Mockito.when(tweetRepository.findByAuthorUserName("Gandalf"))
+        Mockito.when(tweetRepository.findByAuthorUserNameOrderByTimestampDesc("Gandalf"))
                 .thenReturn(Arrays.asList(t2));
         Mockito.when(tweetRepository.findById(id))
                 .thenReturn(Optional.of(t1));

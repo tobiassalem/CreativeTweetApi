@@ -10,12 +10,14 @@ import java.util.List;
 @Repository
 public interface TweetRepository extends JpaRepository<Tweet, Long>, JpaSpecificationExecutor<Tweet> {
 
-    List<Tweet> findByAuthorUserName(String userName);
+    List<Tweet> findAllByOrderByTimestampDesc();
+
+    List<Tweet> findByAuthorUserNameOrderByTimestampDesc(String userName);
 
     List<Tweet> findByMessageContainingIgnoreCase(String message);
 
-    // Calculate word count
-    // NB! Sadly it is not possible to convert this PostgreSQL query to JPQL.
+    // Calculate word count of tweets
+    // TODO: convert this PostgreSQL query to JPQL (alt. fallback to native query).
     // Functions string_to_array and unnest is not supported by JPQL.
     // See https://thoughts-on-java.org/hibernate-tips-call-standard-function-jpql-query/
     /*
@@ -27,8 +29,7 @@ public interface TweetRepository extends JpaRepository<Tweet, Long>, JpaSpecific
     group by words.word
     order by count(*) desc
     */
-    // TODO: solve this query which should count #keywords
-/*    @Query("SELECT new se.salemcreative.twitapi.model.KeywordCount(keyword, COUNT(*)) FROM \n" +
+/*    @Query("SELECT new se.salemcreative.tweetapi.model.KeywordCount(keyword, COUNT(*)) FROM \n" +
             "(SELECT substring(message, locate('#', message)) AS keyword FROM Tweet) words " +
             "GROUP BY keyword " +
             "ORDER BY count(*) DESC")

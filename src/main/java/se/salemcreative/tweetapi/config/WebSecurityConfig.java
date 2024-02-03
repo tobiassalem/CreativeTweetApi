@@ -31,10 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // configure AuthenticationManager so that it knows from where to load
-        // user for matching credentials
+    /**
+     * Configure AuthenticationManager so it knows from where to load user for matching credentials.
+     * @param auth
+     * @throws Exception
+     */
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         // Use BCryptPasswordEncoder
         auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
     }
