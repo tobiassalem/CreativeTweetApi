@@ -15,7 +15,8 @@ on:
       - master
       - release*
   pull_request:
-    branches: [ "master" ]
+    branches: 
+      - master
 
 jobs:
   build:
