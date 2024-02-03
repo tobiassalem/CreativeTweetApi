@@ -17,6 +17,8 @@ on:
   pull_request:
     branches: 
       - master
+      - feature*
+      - hotfix*
 
 jobs:
   build:
