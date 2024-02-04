@@ -1,5 +1,6 @@
 package se.salemcreative.tweetapi.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -8,30 +9,30 @@ import se.salemcreative.tweetapi.jpa.TweetRepository;
 import se.salemcreative.tweetapi.model.Tweet;
 import se.salemcreative.tweetapi.model.TweetStats;
 import se.salemcreative.tweetapi.model.User;
+import se.salemcreative.tweetapi.model.WordStats;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
+@Slf4j
 public class TweetServiceJpaImpl implements TweetService {
 
     @Autowired
-    TweetRepository tweetRepository;
+    TweetRepository repo;
 
     @Override
     public List<Tweet> findAll() {
-        return tweetRepository.findAllByOrderByTimestampDesc();
+        return repo.findAllByOrderByTimestampDesc();
     }
 
     @Override
     public List<Tweet> findByUserName(String userName) {
-        return tweetRepository.findByAuthorUserNameOrderByTimestampDesc(userName);
+        return repo.findByAuthorUserNameOrderByTimestampDesc(userName);
     }
 
     @Override
     public Tweet findById(Long id) {
-        Optional<Tweet> byId = tweetRepository.findById(id);
+        Optional<Tweet> byId = repo.findById(id);
         if (byId.isPresent()) {
             return byId.get();
         } else {
@@ -42,7 +43,7 @@ public class TweetServiceJpaImpl implements TweetService {
     @Override
     public void tweet(User user, String message) {
         Tweet tweet = new Tweet(user, message);
-        tweetRepository.save(tweet);
+        repo.save(tweet);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class TweetServiceJpaImpl implements TweetService {
         Tweet tweet = new Tweet(user, message);
         Tweet inReplyTo = findById(inReplyToId);
         inReplyTo.addReply(tweet);
-        tweetRepository.save(tweet);
+        repo.save(tweet);
     }
 
     @Override
@@ -69,9 +70,25 @@ public class TweetServiceJpaImpl implements TweetService {
         return stats;
     }
 
+    public WordStats getWordStats() {
+        final String whitespaceMetaChar = "\\s+";
+        WordStats stats = new WordStats();
+        Set<String> words = new HashSet<>();
+
+        List<Tweet> all = findAll();
+        all.stream().forEach(t -> {
+            words.addAll(Arrays.asList(t.getMessage().toLowerCase().split(whitespaceMetaChar)));
+        });
+
+        for (String word : words) {
+            stats.addWordCount(word, repo.countByMessageContainingIgnoreCase(word));
+        }
+        return stats;
+    }
+
     @Override
     public List<Tweet> findByContent(String text) {
-        return tweetRepository.findByMessageContainingIgnoreCase(text);
+        return repo.findByMessageContainingIgnoreCase(text);
     }
 
     /**
@@ -82,7 +99,7 @@ public class TweetServiceJpaImpl implements TweetService {
     public List<Tweet> findByCriteria(String criteria) {
         List<String> tokens = ValueHelper.splitStringGoogleStyle(criteria);
         Specification<Tweet> specification = buildTweetSpecification(tokens);
-        return tweetRepository.findAll(specification);
+        return repo.findAll(specification);
     }
 
     private Specification<Tweet> buildTweetSpecification(List<String> tokens) {
@@ -115,7 +132,7 @@ public class TweetServiceJpaImpl implements TweetService {
         } else {
             keyword = message.substring(startIndex);
         }
-        System.out.println("---> Found keyword: " + keyword);
+        log.trace("---> Found keyword: {}", keyword);
         return keyword;
     }
 }

@@ -11,7 +11,7 @@ import se.salemcreative.tweetapi.security.JwtUserDetailsService;
 
 public abstract class AbstractControllerTest {
 
-    protected static final String AUTH_HEADER = HttpHeaders.AUTHORIZATION; // "Authorization ";
+    protected static final String AUTH_HEADER = HttpHeaders.AUTHORIZATION;
     protected static final String JWT_PREFIX = "Bearer ";
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -26,7 +26,7 @@ public abstract class AbstractControllerTest {
     protected String generateToken(String userName) {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
         final String token = jwtTokenUtil.generateToken(userDetails);
-        log.info("---> Generated token: " + token);
+        log.info("---> Generated token for user {}: {} ", userName, token);
         return token;
     }
 

@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() {
-        log.info("Returning all user ");
+        log.info("Returning all users");
         return service.findAll();
     }
 

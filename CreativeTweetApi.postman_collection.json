@@ -22,6 +22,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -249,19 +252,39 @@
 			"response": []
 		},
 		{
-			"name": "Get tweets by content",
+			"name": "Search tweets by content",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/tweets/users/frodo",
+					"raw": "{{url}}/tweets/search/wisdom",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"tweets",
-						"users",
-						"frodo"
+						"search",
+						"wisdom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search tweets by content v2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/tweets/search/v2/How",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"search",
+						"v2",
+						"How"
 					]
 				}
 			},
@@ -273,13 +296,32 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/tweets/trending",
+					"raw": "{{url}}/tweets/stats",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"tweets",
-						"trending"
+						"stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get word stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/tweets/stats/words",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"stats",
+						"words"
 					]
 				}
 			},

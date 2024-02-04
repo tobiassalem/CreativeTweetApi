@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import se.salemcreative.tweetapi.model.Tweet;
 import se.salemcreative.tweetapi.model.TweetStats;
 import se.salemcreative.tweetapi.model.User;
+import se.salemcreative.tweetapi.model.WordStats;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -78,17 +79,43 @@ public class TweetServiceIT extends AbstractServiceTest {
     }
 
     @Test
-    public void getKeywordStats() {
+    public void getTweetStats() {
+        // Setup
         final int expectedNrOfKeywords = 3;
         final Long expectedWisdomCount = 9L;
         final Long expectedStorytellingCount = 2L;
         final Long expectedCorruptionCount = 1L;
+
+        // Call
         TweetStats tweetStats = tweetService.getTweetStats();
 
+        // Assert
         assertEquals(expectedNrOfKeywords, tweetStats.getKeywordStats().size());
         assertEquals(expectedWisdomCount, tweetStats.getKeywordStats().get("#wisdom"));
         assertEquals(expectedStorytellingCount, tweetStats.getKeywordStats().get("#storytelling"));
         assertEquals(expectedCorruptionCount, tweetStats.getKeywordStats().get("#corruption"));
+    }
+
+    @Test
+    public void getWordStats() {
+        // Setup
+        final int expectedWordCount = 100;
+        final Long expectedHobbitCount = null;
+        final Long expectedWizardCount = 1L;
+        final Long expectedWisdomCount = 9L;
+        final Long expectedStorytellingCount = 2L;
+        final Long expectedCorruptionCount = 1L;
+
+        // Call
+        WordStats wordStats = tweetService.getWordStats();
+
+        // Assert
+        assertEquals(expectedWordCount, wordStats.getWordCount().size());
+        assertEquals(expectedHobbitCount, wordStats.getWordCount().get("hobbit"));
+        assertEquals(expectedWizardCount, wordStats.getWordCount().get("wizard"));
+        assertEquals(expectedWisdomCount, wordStats.getWordCount().get("#wisdom"));
+        assertEquals(expectedStorytellingCount, wordStats.getWordCount().get("#storytelling"));
+        assertEquals(expectedCorruptionCount, wordStats.getWordCount().get("#corruption"));
     }
 
     @Test
