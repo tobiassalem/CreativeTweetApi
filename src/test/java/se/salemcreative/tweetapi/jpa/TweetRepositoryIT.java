@@ -12,6 +12,7 @@ import se.salemcreative.tweetapi.model.Tweet;
 import se.salemcreative.tweetapi.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,26 +27,41 @@ public class TweetRepositoryIT {
     private TestEntityManager entityManager;
 
     @Autowired
-    private TweetRepository tweetRepository;
+    private TweetRepository repo;
 
     @Test
     public void findByAuthorUserName() {
-        // given
+        // Setup
         User author = new User("Aragorn");
         entityManager.persist(author);
         entityManager.flush();
 
         Tweet tweet = new Tweet(author, "Never give up!");
-        tweetRepository.save(tweet);
+        repo.save(tweet);
 
-        // when
-        List<Tweet> byUserUserName = tweetRepository.findByAuthorUserNameOrderByTimestampDesc(author.getUserName());
+        // Call
+        List<Tweet> byUserUserName = repo.findByAuthorUserNameOrderByTimestampDesc(author.getUserName());
+
+        // Assert
         assertEquals(1, byUserUserName.size());
-
-        // then
         for (Tweet t : byUserUserName) {
             assertEquals(author.getUserName(), t.getAuthor().getUserName());
         }
+    }
+
+    @Test
+    public void countByMessageContainingIgnoreCase() {
+        // Setup
+        final Long expectedHobbitCount = 0L;
+        final Long expectedWizardCount = 1L;
+
+        // Call
+        Long hobbitCount = repo.countByMessageContainingIgnoreCase("hobbit");
+        Long wizardCount = repo.countByMessageContainingIgnoreCase("wizard");
+
+        // Assert
+        assertEquals(expectedHobbitCount, hobbitCount);
+        assertEquals(expectedWizardCount, wizardCount);
     }
 
 }

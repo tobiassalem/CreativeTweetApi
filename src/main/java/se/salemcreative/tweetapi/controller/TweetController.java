@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import se.salemcreative.tweetapi.model.Tweet;
 import se.salemcreative.tweetapi.model.TweetStats;
+import se.salemcreative.tweetapi.model.WordStats;
 import se.salemcreative.tweetapi.service.SessionService;
 import se.salemcreative.tweetapi.service.TweetService;
 
@@ -59,11 +60,18 @@ public class TweetController {
         service.reply(sessionService.getActiveUser(), message, id);
     }
 
-    @GetMapping("/trending")
+    @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
     public TweetStats getTweetStats() {
         log.info("Returning tweet stats");
         return service.getTweetStats();
+    }
+
+    @GetMapping("/stats/words")
+    @ResponseStatus(HttpStatus.OK)
+    public WordStats getWordStats() {
+        log.info("Returning word stats");
+        return service.getWordStats();
     }
 
     @GetMapping("/search/{text}")
@@ -71,7 +79,7 @@ public class TweetController {
         return service.findByContent(text);
     }
 
-    @GetMapping("/searchV2/{criteria}")
+    @GetMapping("/search/v2/{criteria}")
     public List<Tweet> searchTweetsV2(@PathVariable("criteria") String criteria) {
         return service.findByCriteria(criteria);
     }

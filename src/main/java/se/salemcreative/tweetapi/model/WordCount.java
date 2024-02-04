@@ -2,23 +2,23 @@ package se.salemcreative.tweetapi.model;
 
 import java.io.Serializable;
 
-public class KeywordCount implements Serializable {
+public class WordCount implements Serializable {
 
     private static final long serialVersionUID = 2420976298190109611L;
-    private String keyword;
+    private String word;
     private Long count;
 
-    public KeywordCount(String year, Long count) {
-        this.keyword = year;
+    public WordCount(String word, Long count) {
+        this.word = word;
         this.count = count;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getWord() {
+        return word;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public Long getCount() {

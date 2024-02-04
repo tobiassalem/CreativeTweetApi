@@ -3,6 +3,7 @@ package se.salemcreative.tweetapi.service;
 import se.salemcreative.tweetapi.model.Tweet;
 import se.salemcreative.tweetapi.model.TweetStats;
 import se.salemcreative.tweetapi.model.User;
+import se.salemcreative.tweetapi.model.WordStats;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface TweetService {
     void reply(User user, String message, Long inReplyToId);
 
     TweetStats getTweetStats();
+
+    WordStats getWordStats();
 
     List<Tweet> findByContent(String text);
 
