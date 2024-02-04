@@ -10,7 +10,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Backtick names that are reserved words
+ * Ref. https://www.h2database.com/html/advanced.html#keywords
+ */
 @Entity
+@Table(name="`User`")
 public class User {
 
     @Transient

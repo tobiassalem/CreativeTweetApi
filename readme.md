@@ -45,6 +45,8 @@ A typical use case is the following:
 * GET {{url}}/users/followers/gandalf   - confirm gandalf now has one follower
 * POST {{url}}/users/un-follow/gandalf  - un-follow gandalf
 * GET {{url}}/users/followers/gandalf   - confirm gandalf again has no followers
+* POST {{url}}/tweets/tweet             - post a tweet
+* GET {{url}}/tweets/users/frodo        - read the tweets by frodo
 
 ### Possible improvements
 The possible improvements to the application are naturally many. The most relevant can easily be the following.

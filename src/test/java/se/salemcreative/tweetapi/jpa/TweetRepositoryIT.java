@@ -39,7 +39,7 @@ public class TweetRepositoryIT {
         tweetRepository.save(tweet);
 
         // when
-        List<Tweet> byUserUserName = tweetRepository.findByAuthorUserName(author.getUserName());
+        List<Tweet> byUserUserName = tweetRepository.findByAuthorUserNameOrderByTimestampDesc(author.getUserName());
         assertEquals(1, byUserUserName.size());
 
         // then

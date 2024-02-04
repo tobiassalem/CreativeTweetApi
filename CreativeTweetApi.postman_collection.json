@@ -2,11 +2,25 @@
 	"info": {
 		"_postman_id": "8c0f5e37-3d98-41d7-a395-fb360ee09c70",
 		"name": "Creative Tweet API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1693040"
 	},
 	"item": [
 		{
 			"name": "Authenticate user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonResponse = pm.response.json();\r",
+							"pm.globals.set(\"tweetApiToken\", jsonResponse.token)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -39,6 +53,23 @@
 							"key": "",
 							"value": ""
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get profile data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/profile",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"profile"
 					]
 				}
 			},
@@ -199,7 +230,26 @@
 			"response": []
 		},
 		{
-			"name": "Get user tweets",
+			"name": "Get tweets by user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/tweets/users/frodo",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tweets",
+						"users",
+						"frodo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tweets by content",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -286,7 +336,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU4MzY3OTI0OSwiaWF0IjoxNTgzNjcyMDQ5fQ.JtoRjQX9lWU6p08zYitD435QPOHgmaAC6tHRCjRKrBi_IBPm7BXviCIIOIKJoWGYa5GsPt6LcX2flzBQR-IA6Q",
+				"value": "{{tweetApiToken}}",
 				"type": "string"
 			}
 		]
@@ -295,7 +345,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "8f958c5f-4c1b-4194-9e7a-0b73dac66fc7",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -305,13 +354,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "11b4b048-0ed4-4628-8a26-4ab4dc642cac",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
