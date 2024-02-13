@@ -1,27 +1,24 @@
 package se.salemcreative.tweetapi.jpa;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import se.salemcreative.tweetapi.model.Tweet;
 import se.salemcreative.tweetapi.model.User;
 
 import java.util.List;
-import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
+@Slf4j
 public class TweetRepositoryIT {
-
-    private final Logger log = LoggerFactory.getLogger(TweetRepositoryIT.class);
 
     @Autowired
     private TestEntityManager entityManager;

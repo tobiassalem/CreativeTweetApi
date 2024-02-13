@@ -1,7 +1,6 @@
 package se.salemcreative.tweetapi;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
+@Slf4j
 public class TweetApiApplication {
-
-    private final Logger log = LoggerFactory.getLogger(TweetApiApplication.class);
 
     @Autowired
     UserRepository userRepository;

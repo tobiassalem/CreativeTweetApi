@@ -1,12 +1,10 @@
 package se.salemcreative.tweetapi.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import se.salemcreative.tweetapi.model.Tweet;
 import se.salemcreative.tweetapi.model.TweetStats;
 import se.salemcreative.tweetapi.model.User;
@@ -15,13 +13,12 @@ import se.salemcreative.tweetapi.model.WordStats;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class TweetServiceIT extends AbstractServiceTest {
-
-    private final Logger log = LoggerFactory.getLogger(TweetServiceIT.class);
 
     @Autowired
     private UserService userService;

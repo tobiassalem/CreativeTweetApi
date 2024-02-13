@@ -1,8 +1,7 @@
 package se.salemcreative.tweetapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import se.salemcreative.tweetapi.exception.TweetApiUserException;
 
 import javax.persistence.*;
@@ -15,11 +14,9 @@ import java.util.Set;
  * Ref. https://www.h2database.com/html/advanced.html#keywords
  */
 @Entity
-@Table(name="`User`")
+@Table(name = "`User`")
+@Slf4j
 public class User {
-
-    @Transient
-    private final Logger log = LoggerFactory.getLogger(User.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

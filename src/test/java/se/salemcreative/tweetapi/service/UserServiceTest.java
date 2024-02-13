@@ -1,16 +1,16 @@
 package se.salemcreative.tweetapi.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import se.salemcreative.tweetapi.jpa.UserRepository;
 import se.salemcreative.tweetapi.model.User;
 
@@ -19,12 +19,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+@Slf4j
 public class UserServiceTest extends AbstractServiceTest {
-
-    private final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
 
     @TestConfiguration
     static class UserServiceImplTestContextConfiguration {
@@ -49,7 +48,7 @@ public class UserServiceTest extends AbstractServiceTest {
     @MockBean
     private UserRepository userRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         Mockito.when(userRepository.findByUserName(hobbit.getUserName()))
                 .thenReturn(hobbit);
