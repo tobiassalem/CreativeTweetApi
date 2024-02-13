@@ -1,16 +1,14 @@
 package se.salemcreative.tweetapi.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import se.salemcreative.tweetapi.jpa.TweetRepository;
 import se.salemcreative.tweetapi.jpa.UserRepository;
 import se.salemcreative.tweetapi.model.Tweet;
@@ -22,12 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class TweetServiceTest {
-
-    private final Logger log = LoggerFactory.getLogger(TweetServiceTest.class);
 
     @TestConfiguration
     static class UserServiceImplTestContextConfiguration {
@@ -67,14 +63,15 @@ public class TweetServiceTest {
     final User wizard = new User("Gandalf");
     final Long id = 1L;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         Tweet t1 = new Tweet(hobbit, "There and back again, a hobbit's tale.");
         Tweet t2 = new Tweet(wizard, "A wizard arrives exactly when he means to");
         List<Tweet> all = new ArrayList<>();
         all.add(t1);
         all.add(t2);
-        Mockito.when(tweetRepository.findAll())
+
+        Mockito.when(tweetRepository.findAllByOrderByTimestampDesc())
                 .thenReturn(all);
         Mockito.when(tweetRepository.findByAuthorUserNameOrderByTimestampDesc("Frodo"))
                 .thenReturn(Arrays.asList(t1));

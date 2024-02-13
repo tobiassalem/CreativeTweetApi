@@ -1,7 +1,6 @@
 package se.salemcreative.tweetapi.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.salemcreative.tweetapi.exception.TweetApiSystemException;
@@ -13,9 +12,8 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class UserServiceJpaImpl implements UserService {
-
-    final Logger log = LoggerFactory.getLogger(UserServiceJpaImpl.class.getSimpleName());
 
     @Autowired
     UserRepository userRepository;
