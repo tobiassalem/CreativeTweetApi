@@ -13,10 +13,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUserName(@Param("userName") String userName);
 
-    // Alt.1 - sadly this does not work
-    @Query("SELECT u from User u " +
-            "WHERE :userBeingFollowed IN (u.following) ")
-    Set<User> findFollowers(@Param("userBeingFollowed") User user);
+    // Alt.1: JPA query with Spring Boot 3 and Hibernate 6
+    @Query("SELECT u FROM User u JOIN u.following f WHERE f = :userBeingFollowed")
+    Set<User> findByFollowing(@Param("userBeingFollowed") User user);
+
 
     // Alt.2
     @Query(nativeQuery = true,

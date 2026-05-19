@@ -14,7 +14,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+/**
+ * ITs for our Repo managing Tweets.
+ * Note on Spring Boot 2 vs. 3 changes:
+ * Spring Boot 2 used Hibernate 5.x:
+ * Hibernate 5 was lenient
+ * It silently merged detached entities
+ * ManyToMany cascades were more forgiving
+ *
+ * Spring Boot 3 uses Hibernate 6.x:
+ * Hibernate 6 is strict
+ * It throws exceptions when a detached entity appears in a collection
+ * It requires explicit merge or correct save order
+ */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @Slf4j
