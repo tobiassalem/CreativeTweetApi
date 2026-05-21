@@ -10,7 +10,7 @@ import se.salemcreative.tweetapi.model.TweetStats;
 import se.salemcreative.tweetapi.model.User;
 import se.salemcreative.tweetapi.model.WordStats;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

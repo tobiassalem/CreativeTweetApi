@@ -14,11 +14,24 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * ITs for our Repo managing Users.
+ * Note on Spring Boot 2 vs. 3 changes:
+ * Spring Boot 2 used Hibernate
+ *
+ * t silently merged detached entities
+ * ManyToMany cascades were more forgiving
+ *
+ * Spring Boot 3 uses Hibernate 6.x:
+ * Hibernate 6 is strict
+ * It throws exceptions when a detached entity appears in a collection
+ * It requires explicit merge or correct save order
+ */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @Slf4j
 public class UserRepositoryIT {
-    
+
     @Autowired
     private TestEntityManager entityManager;
 
@@ -66,6 +79,8 @@ public class UserRepositoryIT {
 
     @Test
     public void whenFollowerUser_thenExistAsFollower() {
+        //
+        //
         // given
         User elf = new User("Legolas");
         User wizard = new User("Ozzie");
@@ -74,18 +89,21 @@ public class UserRepositoryIT {
         entityManager.persist(wizard);
         entityManager.flush();
 
+        //
         // when
         User foundElf = userRepository.findByUserName(elf.getUserName());
         User foundWizard = userRepository.findByUserName(wizard.getUserName());
 
-        // Alt.1 - read directly from entity with @ManyToMany relation. Most elegant solution.
+        // Alt.1 - read directly from entity with @ManyToMany relation. Most elegant
+        // solution.
         Set<User> foundFollowers = foundWizard.getFollowers();
 
         // Alt.2 - find by JPA query
-        //Set<User> foundFollowers = userRepository.findFollowers(foundWizard);
+        // Set<User> foundFollowers = userRepository.findFollowers(foundWizard);
 
         // Alt.3 - find by native query
-        //Set<User> foundFollowers = userRepository.findFollowersNative(foundWizard.getId());
+        // Set<User> foundFollowers =
+        // userRepository.findFollowersNative(foundWizard.getId());
 
         // then
         log.debug("Nr of followers of Gandalf: {}", foundFollowers.size());

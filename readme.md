@@ -35,7 +35,7 @@ The access token lives for 30 minutes. Remember that when the token times out, o
 /authenticate,
 you need to update the access token (on the Postman collection, or on individual requests).
 This can be automated by setting and using a Postman variable.
- 
+
 ### Building
 * Install Maven if not already present on your system (if you have an IDE like IntelliJ you're all set).
 * Build with mvn install.
@@ -43,20 +43,20 @@ This can be automated by setting and using a Postman variable.
 ### Running
 
 * Run the Spring Boot application file in your favorite IDE. The main class is TweetApiApplication.
+* Run with `$ mvn spring-boot:run` or from your favorite IDE by running the main class TweetApiApplication.
 * Access the REST services on http://localhost:8080/
-* The application is also hosted on Heroku as https://creative-tweet-api.herokuapp.com
-* To perform the service calls a REST client like Postman is highly recommended. A Postman collection is included for
-  your convenience.
+* The application is hosted on Heroku as https://creative-tweet-api.herokuapp.com
+* To perform the service calls a REST client like Postman is highly recommended. A Postman collection is included for your convenience.
 
-A typical use case is the following:
+The flow of a typical use case is the following:
 
-* POST {{url}}/authenticate to get an access token to add to all requests
+* POST {{url}}/authenticate to get an access token [JWT] to add to all requests
 * GET {{url}}/users/active - confirm that you are active user frodo
 * GET {{url}}/users/followers/gandalf - confirm gandalf has no followers
 * POST {{url}}/users/follow/gandalf - follow gandalf
 * GET {{url}}/users/followers/gandalf - confirm gandalf now has one follower
 * POST {{url}}/users/un-follow/gandalf - un-follow gandalf
-* GET {{url}}/users/followers/gandalf - confirm gandalf again has no followers
+* GET {{url}}/users/followers/gandalf - confirm gandalf has no followers [again]
 * POST {{url}}/tweets/tweet - post a tweet
 * GET {{url}}/tweets/users/frodo - read the tweets by frodo
 

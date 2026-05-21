@@ -14,11 +14,33 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * The JwtTokenHelper is responsible for performing JWT operations like creation and validation.
+ * The JwtTokenHelper is responsible for performing JWT operations like creation
+ * and validation.
  * It makes use of the io.jsonwebtoken.Jwts for achieving this.
  * <p>
- * A JWT token consists of three parts (header, payload, signature) and is on the format xxxxx.yyyyy.zzzzz
- * Example: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU4MzQyMTk5MiwiaWF0IjoxNTgzNDE0NzkyfQ.9AMFFMZzeutUJrhXUTr6mI4iykQ_o4W_zoT015hvjWilKtyz9CmlfKce59TOc3hS5A59AHV6VTvMaell0N081g
+ * A JWT token consists of three parts (header, payload, signature) and is on
+ * the format xxxxx.yyyyy.zzzzz
+ * Example:
+ * eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTU4MzQyMTk5MiwiaWF0IjoxNTgzNDE0NzkyfQ.9AMFFMZzeutUJrhXUTr6mI4iykQ_o4W_zoT015hvjWilKtyz9CmlfKce59TOc3hS5A59AHV6VTvMaell0N081g
+ *
+ * Note on Spring Boot 2 vs. 3 and secret keys
+ * your key must be longer, but let me give you the full picture, because this
+ * is one of the most common Spring Boot 3 + JJWT 0.12.x migration traps.
+ * Your new error says everything:
+ * WeakKey: The signing key's size is 136 bits which is not secure enough for
+ * HS512.
+ * Keys used with HS512 MUST have a size >= 512 bits.
+ * This is not optional. This is enforced by:
+ * JJWT 0.12.x
+ * RFC 7518 (the JWT JWA spec)
+ * Spring Boot 3’s updated crypto defaults
+ * 🎯 Why your key is now “too weak”
+ * In Spring Boot 2.x, JJWT 0.9.x allowed any string as a secret key.
+ * In Spring Boot 3.x, JJWT 0.12.x enforces:
+ * Algorithm Minimum key size
+ * HS256 256 bits
+ * HS384 384 bits
+ * HS512 512 bits
  *
  * @See https://jwt.io/introduction/
  */
@@ -65,9 +87,10 @@ public class JwtTokenUtil implements Serializable {
     }
 
     // When creating the token -
-    // 1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
+    // 1. Define claims of the token, like Issuer, Expiration, Subject, and the ID
     // 2. Sign the JWT using the HS512 algorithm and secret key.
-    // 3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
+    // 3. According to JWS Compact
+    // Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
     // compaction of the JWT to a URL-safe string
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
